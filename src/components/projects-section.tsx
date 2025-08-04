@@ -2,17 +2,104 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { ExternalLink, Github, Globe, Car, Plane } from "lucide-react"
+import { ExternalLink, Github, Car, Plane, ShoppingBag, BarChart3, Eye } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { ProjectDetailModal } from "./project-detail-modal"
+
+interface Project {
+  id: number
+  title: string
+  description: string
+  longDescription: string
+  image: string
+  technologies: string[]
+  category: string
+  icon: React.ComponentType<{ className?: string }>
+  features: string[]
+  challenges?: string[]
+  duration?: string
+  teamSize?: string
+  myRole?: string
+  results?: string[]
+  githubUrl?: string
+  liveUrl?: string
+}
 
 const projects = [
   {
     id: 1,
+    title: "E-commerce Jamu Madura",
+    description: "Platform e-commerce untuk produk jamu tradisional dengan fitur chatbot AI",
+    longDescription: "Platform e-commerce komprehensif yang khusus dirancang untuk mempromosikan dan menjual produk jamu tradisional Madura. Sistem ini dilengkapi dengan chatbot AI yang dapat memberikan rekomendasi produk berdasarkan keluhan kesehatan pengguna, informasi detail tentang manfaat jamu, dan panduan penggunaan yang tepat.",
+    image: "�",
+    technologies: ["React", "Node.js", "MongoDB", "OpenAI API", "Stripe", "Socket.io"],
+    category: "Full Stack",
+    icon: ShoppingBag,
+    features: [
+      "Katalog produk jamu dengan detail manfaat dan komposisi",
+      "Chatbot AI untuk konsultasi dan rekomendasi produk",
+      "Sistem pembayaran terintegrasi dengan multiple gateway",
+      "Dashboard admin untuk manajemen produk dan pesanan"
+    ],
+    challenges: [
+      "Implementasi NLP untuk memahami keluhan kesehatan dalam bahasa Indonesia",
+      "Integrasi multiple payment gateway sesuai regulasi Indonesia",
+      "Optimasi performa untuk handling ribuan produk jamu",
+      "Implementasi sistem rekomendasi berbasis AI yang akurat"
+    ],
+    results: [
+      "Peningkatan awareness produk jamu tradisional sebesar 40%",
+      "Tingkat konversi penjualan mencapai 15% melalui rekomendasi chatbot",
+      "User engagement rate 85% dengan rata-rata session 8 menit",
+      "Feedback positif 92% dari pengguna untuk fitur chatbot"
+    ],
+    duration: "4 bulan",
+    teamSize: "3 orang",
+    myRole: "Full Stack Developer & AI Integration Specialist",
+    githubUrl: "https://github.com/mchyns/jamu-madura-ecommerce",
+    liveUrl: "https://jamu-madura.vercel.app"
+  },
+  {
+    id: 2,
+    title: "Leukemia Classification System",
+    description: "Sistem klasifikasi leukemia menggunakan deep learning dan computer vision",
+    longDescription: "Sistem klasifikasi otomatis untuk mendeteksi dan mengklasifikasikan jenis leukemia berdasarkan analisis citra mikroskopis sel darah. Menggunakan teknologi deep learning dengan arsitektur CNN yang telah dioptimasi khusus untuk analisis medical imaging. Sistem ini dapat membantu tenaga medis dalam proses diagnosis awal dengan akurasi tinggi.",
+    image: "🔬",
+    technologies: ["Python", "TensorFlow", "OpenCV", "Streamlit", "NumPy", "Pandas", "Scikit-learn"],
+    category: "AI/ML",
+    icon: BarChart3,
+    features: [
+      "Klasifikasi 4 jenis leukemia utama (ALL, AML, CLL, CML)",
+      "Preprocessing otomatis untuk normalisasi citra",
+      "Visualisasi hasil analisis dengan confidence score",
+      "Batch processing untuk multiple samples"
+    ],
+    challenges: [
+      "Handling dataset yang tidak seimbang antar kelas",
+      "Optimasi model untuk akurasi tinggi dengan waktu inferensi cepat",
+      "Implementasi data augmentation yang sesuai untuk medical imaging",
+      "Validasi hasil dengan standar medical yang ketat"
+    ],
+    results: [
+      "Akurasi klasifikasi mencapai 94.5% pada test dataset",
+      "Precision rata-rata 93.2% untuk semua kelas leukemia",
+      "Recall rate 94.8% untuk deteksi early-stage leukemia",
+      "Waktu inferensi rata-rata 2.3 detik per sample"
+    ],
+    duration: "6 bulan",
+    teamSize: "Solo project",
+    myRole: "ML Engineer & Data Scientist",
+    githubUrl: "https://github.com/mchyns/leukemia-classification"
+  },
+  {
+    id: 3,
     title: "Web Ojek Online",
     description: "A comprehensive online motorcycle taxi booking system with real-time tracking, driver management, and integrated payment system. Features include user registration, ride booking, GPS tracking, and payment processing.",
-    image: "🏍️",
+    longDescription: "Sistem pemesanan ojek online yang komprehensif dengan fitur pelacakan real-time, manajemen driver, dan sistem pembayaran terintegrasi. Platform ini memungkinkan pengguna untuk memesan ojek, melacak perjalanan secara real-time, dan melakukan pembayaran dengan aman.",
+    image: "�️",
     technologies: ["Laravel", "PHP", "MySQL", "JavaScript", "Bootstrap", "Google Maps API"],
     category: "Web Application",
     icon: Car,
@@ -21,27 +108,16 @@ const projects = [
       "Payment gateway integration", 
       "Driver & passenger management",
       "Admin dashboard"
-    ]
+    ],
+    duration: "3 bulan",
+    teamSize: "4 orang",
+    myRole: "Backend Developer"
   },
   {
-    id: 2,
-    title: "Sistem Reservasi Restoran",
-    description: "An elegant restaurant reservation system that allows customers to book tables online, view menus, and manage reservations. Includes admin panel for restaurant management and table availability tracking.",
-    image: "🍽️",
-    technologies: ["PHP", "MySQL", "jQuery", "CSS", "Bootstrap"],
-    category: "Booking System",
-    icon: Globe,
-    features: [
-      "Table booking system",
-      "Menu management",
-      "Customer notifications",
-      "Reservation analytics"
-    ]
-  },
-  {
-    id: 3,
+    id: 4,
     title: "Booking Tiket Wisata Online",
     description: "A tourism ticket booking platform that enables users to browse destinations, book tickets online, and receive digital tickets. Features secure payment processing and ticket verification system.",
+    longDescription: "Platform pemesanan tiket wisata online yang memungkinkan pengguna untuk menjelajahi destinasi, memesan tiket secara online, dan menerima tiket digital. Dilengkapi dengan sistem pembayaran yang aman dan sistem verifikasi tiket.",
     image: "🎫",
     technologies: ["Laravel", "Vue.js", "MySQL", "Payment Gateway", "PDF Generator"],
     category: "E-Commerce",
@@ -51,22 +127,10 @@ const projects = [
       "Digital ticket generation",
       "Payment processing",
       "Destination management"
-    ]
-  },
-  {
-    id: 4,
-    title: "Portfolio Website",
-    description: "This modern portfolio website built with Next.js, featuring responsive design, dark/light theme toggle, smooth animations, and interactive components. Showcases my skills and projects in an elegant way.",
-    image: "💼",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "ShadCN UI"],
-    category: "Portfolio",
-    icon: Globe,
-    features: [
-      "Responsive design",
-      "Dark/Light theme",
-      "Smooth animations",
-      "Modern UI components"
-    ]
+    ],
+    duration: "2 bulan",
+    teamSize: "2 orang",
+    myRole: "Full Stack Developer"
   }
 ]
 
@@ -75,6 +139,14 @@ export function ProjectsSection() {
     triggerOnce: true,
     threshold: 0.1
   })
+
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleViewDetails = (project: Project) => {
+    setSelectedProject(project)
+    setIsModalOpen(true)
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -176,14 +248,44 @@ export function ProjectsSection() {
 
                       {/* Action Buttons */}
                       <div className="flex gap-3">
-                        <Button size="sm" variant="outline" className="flex-1">
-                          <Github className="w-4 h-4 mr-2" />
-                          Code
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="flex-1"
+                          onClick={() => handleViewDetails(project)}
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          Detail
                         </Button>
-                        <Button size="sm" className="flex-1">
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Demo
-                        </Button>
+                        {project.githubUrl ? (
+                          <Button size="sm" variant="outline" className="flex-1" asChild>
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Github className="w-4 h-4 mr-2" />
+                              Code
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button size="sm" variant="outline" disabled className="flex-1">
+                            <Github className="w-4 h-4 mr-2" />
+                            Private
+                          </Button>
+                        )}
+                        {project.liveUrl && (
+                          <Button size="sm" className="flex-1" asChild>
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              Demo
+                            </a>
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </CardContent>
@@ -221,6 +323,13 @@ export function ProjectsSection() {
             </Card>
           </motion.div>
         </motion.div>
+
+        {/* Project Detail Modal */}
+        <ProjectDetailModal
+          project={selectedProject}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </section>
   )
